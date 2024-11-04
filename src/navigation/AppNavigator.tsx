@@ -4,6 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import AntDesign from '@expo/vector-icons/AntDesign';
+
 
 import HomeScreen from '../screens/HomeScreen';
 import ApplicationScreen from '../screens/ApplicationScreen'; 
@@ -32,7 +35,6 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   MainTabs: undefined;
-  UserDetailScreen: undefined;
   LearningSession: { topic: string; segmentIds: string[] }; 
   GiziMaterial: { id: string }; 
   MentalHealthMaterial: { id: string }; 
@@ -40,17 +42,25 @@ export type RootStackParamList = {
   EditProfile: undefined;
   Telehealth: undefined;
   MedicalProfessionalSelectionScreen: undefined;
+  UserDetailScreen: undefined;
 };
 
 const BottomTabNavigation = () => (
-  <Tab.Navigator
+  <Tab.Navigator 
     screenOptions={{
       tabBarStyle: {
         backgroundColor: '#18B2A0', // Set background color
-        height: 60, // Reset the height of the tab bar to a normal size
+        height: 70, // Reset the height of the tab bar to a normal size
       },
       tabBarActiveTintColor: '#FFFFFF', // Set active icon color to white
-      tabBarInactiveTintColor: '#B0B0B0', // Optional: Set inactive icon color
+      tabBarInactiveTintColor: '#DFDFDF', // Optional: Set inactive icon color
+      tabBarIconStyle: {
+         // Reset the margin of the icon
+      },
+      tabBarItemStyle: {
+        marginBottom: 10, // Reset the margin of the tab item
+      },
+     
     }}
   >
     <Tab.Screen 
@@ -59,16 +69,16 @@ const BottomTabNavigation = () => (
       options={{ 
         headerShown: false, 
         tabBarIcon: ({ color, focused }) => (
-          <Ionicons name="home" size={focused ? 36 : 24} color={color} /> // Active size 1.5x (36), inactive size (24)
+          <MaterialIcons name="home" size={focused ? 36 : 24} color={color} /> // Active size 1.5x (36), inactive size (24)
         ) 
       }} 
     />
     <Tab.Screen 
-      name="Module" 
+      name="Learning" 
       component={ModuleScreen} 
       options={{ headerShown: false,
         tabBarIcon: ({ color, focused }) => (
-          <MaterialIcons name="library-books" size={focused ? 36 : 24} color={color} /> // Active size 1.5x (36), inactive size (24)
+          <FontAwesome5 name="book" size={focused ? 36 : 24} color={color} /> // Active size 1.5x (36), inactive size (24)
         ) 
       }} 
     />
@@ -77,7 +87,7 @@ const BottomTabNavigation = () => (
       component={ForumScreen} 
       options={{ 
         tabBarIcon: ({ color, focused }) => (
-          <Ionicons name="chatbubbles" size={focused ? 36 : 24} color={color} /> // Active size 1.5x (36), inactive size (24)
+          <Ionicons name="chatbubble-outline" size={focused ? 36 : 24} color={color} /> // Active size 1.5x (36), inactive size (24)
         ) 
       }} 
     />
@@ -86,7 +96,7 @@ const BottomTabNavigation = () => (
       component={ApplicationScreen} 
       options={{ 
         tabBarIcon: ({ color, focused }) => (
-          <MaterialIcons name="apps" size={focused ? 36 : 24} color={color} /> // Active size 1.5x (36), inactive size (24)
+          <AntDesign name="appstore-o" size={focused ? 36 : 24} color={color} /> // Active size 1.5x (36), inactive size (24)
         ) 
       }} 
     />
@@ -116,7 +126,7 @@ const AppNavigator: React.FC = () => {
           )}
         </Stack.Screen>
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="UserDetailScreen" component={UserDetailScreen} options={{ headerShown: true }} /> 
+        <Stack.Screen name="UserDetailScreen" component={UserDetailScreen} options={{ headerShown: false }} />
         <Stack.Screen
           name="MainTabs"
           component={BottomTabNavigation}

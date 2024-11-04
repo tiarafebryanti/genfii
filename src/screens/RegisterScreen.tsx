@@ -1,15 +1,27 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Linking } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Linking,
+  ScrollView
+} from "react-native";
 import Checkbox from "expo-checkbox";
-import InputComponent from "../components/InputComponent"; 
+import InputComponent from "../components/InputComponent";
 import ButtonComponent from "../components/ButtonComponent";
 import ResponsiveContainer from "../components/ResponsiveContainer";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
-import AlertModal from '../components/AlertModal';
-import SuccessModal from '../components/SuccessModal';
+import AlertModal from "../components/AlertModal";
+import SuccessModal from "../components/SuccessModal";
 import { RegisterApi } from "../api/Auth";
-import { saveID } from "../utils/handlingDataRegister"; 
+import { saveID } from "../utils/handlingDataRegister";
 import { saveToken } from "../utils/handlingDataLogin"; // Import saveToken function
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Feather from "@expo/vector-icons/Feather";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const RegisterScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<any>>();
@@ -19,8 +31,8 @@ const RegisterScreen: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agree, setAgree] = useState(false);
-  const [alertVisible, setAlertVisible] = useState(false); 
-  const [alertMessage, setAlertMessage] = useState(''); 
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const [successVisible, setSuccessVisible] = useState(false);
 
   const handlePhoneNumberChange = (value: string) => {
@@ -32,139 +44,129 @@ const RegisterScreen: React.FC = () => {
   };
 
   const handleRegister = async () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setAlertMessage('Harap masukkan format email yang valid.');
+      setAlertMessage("Harap masukkan format email yang valid.");
       setAlertVisible(true);
       return;
     }
     if (phoneNumber.length < 13) {
-      setAlertMessage('Harap masukkan nomor HP yang valid dengan format +62 dan lebih dari 12 digit.');
+      setAlertMessage(
+        "Harap masukkan nomor HP yang valid dengan format +62 dan lebih dari 12 digit."
+      );
       setAlertVisible(true);
       return;
     }
     if (!username || !password || !confirmPassword) {
-      setAlertMessage('Harap isi semua field.');
+      setAlertMessage("Harap isi semua field.");
       setAlertVisible(true);
       return;
     }
     if (password !== confirmPassword) {
-      setAlertMessage('Password dan Konfirmasi Password tidak cocok.');
+      setAlertMessage("Password dan Konfirmasi Password tidak cocok.");
       setAlertVisible(true);
       return;
     }
     if (!agree) {
-      setAlertMessage('Anda harus menyetujui persyaratan penggunaan aplikasi.');
+      setAlertMessage("Anda harus menyetujui persyaratan penggunaan aplikasi.");
       setAlertVisible(true);
       return;
     }
-
-    try {
-      const registerData = {
-        username,
-        email,
-        password,
-        phone: phoneNumber,
-      };
-      const response = await RegisterApi(registerData);
-      
-      // Log the API response
-      console.log("API Response:", response);
-      
-      const userId = response.user.id;
-      const token = response.jwt; // Extract the token from the response
-      
-      await saveID(userId.toString()); // Call saveID to store user ID
-      await saveToken(token); // Save the token
-      
-      setSuccessVisible(true);
-      
-      // Navigate to UserDetailScreen after a delay
-      setTimeout(() => {
-        setSuccessVisible(false);
-        navigation.navigate("UserDetailScreen");
-      }, 2000); 
-    
-    } catch (error) {
-      const errMessage = (error as Error).message;
-      setAlertMessage('Registrasi gagal: ' + errMessage);
-      setAlertVisible(true);
-    }
+      navigation.navigate("UserDetailScreen");
   };
 
   const openTerms = () => {
-    Linking.openURL('https://example.com/syarat-ketentuan.pdf');
+    Linking.openURL("https://example.com/syarat-ketentuan.pdf");
   };
 
   const openPrivacyPolicy = () => {
-    Linking.openURL('https://example.com/kebijakan-privasi.pdf');
+    Linking.openURL("https://example.com/kebijakan-privasi.pdf");
   };
 
   return (
     <ResponsiveContainer>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.innerContainer}>
         <Image
-          source={require("../../assets/login-chara.png")}
+          source={require("../../assets/register.png")}
           style={styles.image}
         />
 
         <Text style={styles.title}>Daftar</Text>
-        <Text style={styles.subtitle}>Buat akun baru</Text>
+        <Text style={styles.subtitle}>Buat akun Genfit sekarang!</Text>
 
-        <InputComponent 
-          placeholder="Email" 
-          value={email} 
-          onChangeText={setEmail} 
-          keyboardType="email-address" 
-        />
-        
-        <InputComponent 
-          placeholder="Username" 
-          value={username} 
-          onChangeText={setUsername} 
-        />
-        
-        <InputComponent 
-          placeholder="Nomor HP (+62)" 
-          value={phoneNumber} 
-          onChangeText={handlePhoneNumberChange} 
-          keyboardType="phone-pad" 
-        />
+        <View style={styles.inputContainer}>
+          <MaterialCommunityIcons
+            name="email-outline"
+            size={24}
+            color="black"
+          />
+          <InputComponent
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <FontAwesome6 name="user" size={24} color="black" />
+          <InputComponent
+            placeholder="Username"
+            value={username}
+            onChangeText={setUsername}
+          />
+        </View>
 
-        <InputComponent 
-          placeholder="Password" 
-          secureTextEntry 
-          value={password} 
-          onChangeText={setPassword} 
-        />
-        
-        <InputComponent 
-          placeholder="Konfirmasi Password" 
-          secureTextEntry 
-          value={confirmPassword} 
-          onChangeText={setConfirmPassword} 
-        />
+        <View style={styles.inputContainer}>
+          <Feather name="smartphone" size={24} color="black" />
+          <InputComponent
+            placeholder="Nomor HP (+62)"
+            value={phoneNumber}
+            onChangeText={handlePhoneNumberChange}
+            keyboardType="phone-pad"
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <AntDesign name="lock" size={24} color="black" />
+          <InputComponent
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <AntDesign name="lock" size={24} color="black" />
+          <InputComponent
+            placeholder="Konfirmasi Password"
+            secureTextEntry
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
+        </View>
 
         <View style={styles.agreementContainer}>
           <Checkbox value={agree} onValueChange={setAgree} />
           <Text style={styles.agreementText}>
-            Saya setuju dengan{' '}
+            Saya setuju dengan{" "}
             <TouchableOpacity onPress={openTerms}>
               <Text style={styles.linkText}>Syarat dan Ketentuan</Text>
-            </TouchableOpacity>{' '}
-            dan{' '}
+            </TouchableOpacity>{" "}
+            dan{" "}
             <TouchableOpacity onPress={openPrivacyPolicy}>
               <Text style={styles.linkText}>Kebijakan Privasi</Text>
             </TouchableOpacity>
           </Text>
         </View>
 
-        <ButtonComponent title="Register" onPress={handleRegister} />
-        
+        <ButtonComponent title="Masuk" onPress={handleRegister} />
+
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.loginText}>
             Sudah punya akun?{" "}
-            <Text style={styles.loginLink}>Masuk disini!</Text>
+            <Text style={styles.loginLink}>Login disini!</Text>
           </Text>
         </TouchableOpacity>
 
@@ -179,6 +181,7 @@ const RegisterScreen: React.FC = () => {
           onClose={() => setSuccessVisible(false)}
         />
       </View>
+      </ScrollView>
     </ResponsiveContainer>
   );
 };
@@ -189,11 +192,15 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
   },
+  scrollContainer: {
+    flexGrow: 1,
+    
+  },
   image: {
     width: "100%",
     height: 200,
-    marginBottom: 20,
-    resizeMode: "contain", 
+    marginTop: 5,
+    resizeMode: "contain",
   },
   title: {
     fontSize: 28,
@@ -226,8 +233,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   linkText: {
-    color: '#1E3A8A', 
-    fontWeight: 'bold',
+    color: "#18B2A0",
+    fontWeight: "bold",
+    
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#18B2A0",
+    borderRadius: 15,
+    padding: 8,
+    marginBottom: 16,
   },
 });
 

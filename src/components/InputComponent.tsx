@@ -50,12 +50,10 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#0FA18C',
-    borderRadius: 50,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    marginBottom: 20,
+    marginLeft: 10,
+    padding: 5,
+   
+   
   },
   input: {
     flex: 1,
@@ -63,7 +61,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   iconContainer: {
-    marginLeft: 10,
+   marginRight: 30,
   },
 });
 

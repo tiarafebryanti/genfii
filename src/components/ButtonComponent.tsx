@@ -24,11 +24,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#18B2A0',
     paddingVertical: 15,
     paddingHorizontal: 25,
-    borderRadius: 25,
+    borderRadius: 10,
     marginVertical: 10,
     alignSelf: 'center',
-    minWidth: '60%',
-    maxWidth: '80%',
+    width: '100%',
+    
+
   },
   disabledButton: {
     backgroundColor: '#D3D3D3', // Grey background for disabled button

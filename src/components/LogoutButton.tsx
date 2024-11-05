@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Alert } from 'react-native';
+import { Alert, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import { deleteToken } from '../utils/handlingDataLogin'; // Pastikan jalur ini sesuai dengan struktur proyek Anda
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 
 const LogoutButton: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const handleLogout = async () => {
@@ -25,8 +26,32 @@ const LogoutButton: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   };
 
   return (
-    <Button title="Logout" onPress={handleLogout} />
+    <TouchableOpacity style={styles.button} onPress={handleLogout}>
+      <SimpleLineIcons name="logout" size={24} color="white" />
+      <Text style={styles.buttonText}>Logout</Text>
+    </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#E04F4F', // Warna latar belakang merah
+    paddingVertical: 18,
+    borderRadius: 10,
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 10,
+    width: '100%',
+    justifyContent: 'center',
+    marginTop: 20,
+    
+    
+  },
+  buttonText: {
+    color: 'white', // Warna teks putih
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
 
 export default LogoutButton;

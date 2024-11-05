@@ -18,7 +18,7 @@ import { calculateBMI, getNutritionalStatus } from "../utils/bmiHelper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
-import BMIScreen from "../components/UsercardBaru";
+import BMIScreen from "../components/UsercardHome";
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<any>>();

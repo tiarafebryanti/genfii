@@ -181,7 +181,8 @@ const UserDetailScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    alignItems: "center",
+    
     justifyContent: "center",
   },
   inputContainer: {
@@ -224,7 +225,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   scrollContainer: {
-    
+    padding: 20,
   },
   datePickerContainer: {
     flexDirection: "row",
@@ -247,6 +248,7 @@ const styles = StyleSheet.create({
   triangleIcon: {
     marginRight: 14,
   },
+  
 });
 
 export default UserDetailScreen;
